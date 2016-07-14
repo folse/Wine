@@ -24,15 +24,6 @@ class WineSpider(Spider):
 
         wine_item = WineItem()
 
-        # store_id_array = response.xpath('//Nr/text()').extract()
-        # store_name_array = response.xpath('//Namn/text()').extract()
-        # for i in range(len(store_id_array)):
-        #     store_id = store_id_array[i]
-        #     if not '-' in store_id:
-        #         print store_id
-        #         print store_name_array[i]
-
-
         store_array = response.xpath('//ButikOmbud')
 
         for store in store_array:

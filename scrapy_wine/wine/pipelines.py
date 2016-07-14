@@ -14,7 +14,7 @@ class WinePipeline(object):
 
     def process_item(self,item,spider):
 
-    	print wine_item
+    	print item
 
         return item
 
