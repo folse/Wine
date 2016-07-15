@@ -55,6 +55,8 @@ def get_store_wine(wine_subcategory,store_id,page):
 		sheet.write(read_sheet.nrows,2,product_inventory)
 		book.save(inventory_file_name)
 
+		store_url_file.write(product_url+"' '")
+
 	next_page = meta_data['NextPage']
 	if next_page > 0:
 		get_store_wine(wine_subcategory,store_id,next_page)
@@ -64,6 +66,8 @@ def remove_old_file():
 		os.remove(inventory_file_name)
 
 if __name__ == '__main__':
+
+	store_url_file = open('data', 'w+')
 
 	remove_old_file()
 
@@ -89,3 +93,5 @@ if __name__ == '__main__':
 		sheet.write(read_sheet.nrows+1,2,time.strftime('%H:%M:%S',time.localtime(time.time())))
 		book.save(inventory_file_name)
 		get_store_wine(wine_subcategory,store_id,0)
+
+	store_url_file.close( )
