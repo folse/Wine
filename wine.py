@@ -71,7 +71,7 @@ def save_store_info(store_info):
 
 if __name__ == '__main__':
 
-	conn = psycopg2.connect(database="wine", user="folse", password="", host="localhost", port="5432")
+	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
 
 	wine_subcategory = u'Rött vin'

@@ -27,7 +27,7 @@ class WinePipeline(object):
         return item
 
     def initialize(self):
-        self.conn = psycopg2.connect(database="wine", user="folse", password="", host="localhost", port="5432")
+        self.conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 
     def finalize(self):
         if self.conn is not None:

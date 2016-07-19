@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
 	os.chdir("scrapy_wine")
 
-	conn = psycopg2.connect(database="wine", user="folse", password="", host="localhost", port="5432")
+	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
 	cursor.execute("SELECT COUNT(*) FROM wine")
 	rows_count = cursor.fetchone()[0]
