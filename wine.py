@@ -25,7 +25,12 @@ def get_store_wine(wine_subcategory,store_id,page):
 
 	print request_url
 
-	resp = urllib2.urlopen(request_url).read()  
+	try:
+		resp = urllib2.urlopen(request_url).read()
+	except Exception, e:
+		time.sleep(60)
+		resp = urllib2.urlopen(request_url).read()
+	  
 	resp_json = json.loads(resp)
 	meta_data = resp_json['Metadata']
 	product_array = resp_json['ProductSearchResults']

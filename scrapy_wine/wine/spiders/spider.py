@@ -22,7 +22,7 @@ class WineSpider(Spider):
 
         # print response.body
 
-        print response.xpath('//div[@class="details-list"]/ul/li/p/button/text()').extract()[0].strip()
+        print response.xpath('//div[@class="details-list"]/ul/li/p').extract()
 
         item = WineItem()
 
