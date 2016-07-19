@@ -8,10 +8,8 @@
 from scrapy.item import Item, Field
 
 class WineItem(Item):
-
-    product_id = Field()
-    product_name = Field()
-    sales_start_date = Field()
+    
+    sales_start = Field()
     alcohol = Field()
     color = Field()
     fragrance = Field()
@@ -19,3 +17,4 @@ class WineItem(Item):
     sugar = Field()
     producer = Field()
     supplier = Field()
+    number = Field()

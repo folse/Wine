@@ -22,18 +22,26 @@ class WineSpider(Spider):
 
         # print response.body
 
-        wine_item = WineItem()
-        
+        print response.xpath('//div[@class="details-list"]/ul/li/p/button/text()').extract()[0].strip()
+
+        item = WineItem()
+
         info_array = response.xpath('//div[@class="details-list"]/ul/li/p/text()').extract()
 
-        wine_item['sales_start_date'] = info_array[0]
-        wine_item['alcohol'] = info_array[1]
-        wine_item['color'] = info_array[2]
-        wine_item['fragrance'] = info_array[3]
-        wine_item['ingredient'] = info_array[4]
-        wine_item['sugar'] = info_array[5]
-        wine_item['producer'] = info_array[6]
-        wine_item['supplier'] = info_array[7]
+        item['sales_start'] = info_array[0]
+        item['alcohol'] = info_array[1]
+        item['color'] = info_array[2]
+        item['fragrance'] = info_array[3]
+        item['ingredient'] = response.xpath('//div[@class="details-list"]/ul/li/p/button/text()').extract()[0].strip()
+        item['sugar'] = info_array[5]
+        item['producer'] = info_array[6]
+        item['supplier'] = info_array[7]
 
-        yield wine_item
+        number = self.start_urls[0].split('-')[len(self.start_urls[0].split('-'))-1]
+
+        print number
+
+        item['number'] = number
+
+        yield item
             

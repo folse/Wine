@@ -36,13 +36,14 @@ def get_store_wine(wine_subcategory,store_id,page):
 
 		product_name = str(product['ProductNameBold']).encode("utf-8") + ' ' + str(product['ProductNameThin']).encode("utf-8")
 		product_id = product['ProductId']
+		product_number = product['ProductNumber']
 		product_inventory = product['QuantityText']
 		product_url = product['ProductUrl']
 
 		exist = cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
 		result = cursor.fetchone()
 		if result == None:
-			cursor.execute("INSERT INTO wine(sys_wine_id, name, url) VALUES (%s,%s,%s)", (product_id, product_name, product_url))
+			cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s)", (product_id, product_name, product_number, product_url))
     		conn.commit()
 
 		cursor.execute("INSERT INTO store_wine(sys_wine_id, sys_store_id, inventory)VALUES(%s, %s, %s)", (product_id, store_id, product_inventory))
