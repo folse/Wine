@@ -74,6 +74,16 @@ def save_store_info(store_info):
     	conn.commit()
 	get_store_wine(wine_subcategory,store_id,0)
 
+def split_array(store_array):
+	store_index = 0
+	if len(store_array) > 6000:
+		working_array = store_array[:6000]
+		save_store_info(working_array[store_index])
+		store_array = store_array[6000:]
+		split_array(store_array)
+	else:
+		save_store_info(store_array[store_index])
+
 if __name__ == '__main__':
 
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
@@ -83,8 +93,8 @@ if __name__ == '__main__':
 
 	store_array = STORE_LIST.split('&')
 
-	store_index = 0
-	save_store_info(store_array[store_index])
+	split_array(store_array)
+
 
 	cursor.close()
 	conn.close()
