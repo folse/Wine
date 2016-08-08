@@ -92,7 +92,7 @@ if __name__ == '__main__':
 	wine_subcategory = u'Rött vin'
 
 	store_array = STORE_LIST.split('&')
-
+	store_index = 0
 	split_array(store_array)
 
 
