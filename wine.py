@@ -23,7 +23,7 @@ def get_store_wine(wine_subcategory,store_id,page):
 
 	request_url = 'http://www.systembolaget.se/api/productsearch/search?' + request_data.replace('+','%20')
 
-	print store_id + ',' + page
+	print str(store_id) + ',' + str(page)
 
 	try:
 		resp = urllib2.urlopen(request_url).read()
