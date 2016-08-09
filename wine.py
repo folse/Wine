@@ -76,10 +76,10 @@ def save_store_info(store_info):
 
 def split_array(store_array):
 	store_index = 0
-	if len(store_array) > 6000:
-		working_array = store_array[:6000]
+	if len(store_array) > 100:
+		working_array = store_array[:100]
 		save_store_info(working_array[store_index])
-		store_array = store_array[6000:]
+		store_array = store_array[100:]
 		split_array(store_array)
 	else:
 		save_store_info(store_array[store_index])
