@@ -46,14 +46,17 @@ def get_store_wine(wine_subcategory,store_id,page):
 		product_inventory = product['QuantityText']
 		product_url = product['ProductUrl']
 
-		exist = cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
+		cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
 		result = cursor.fetchone()
 		if result == None:
 			cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s)", (product_id, product_name, product_number, product_url))
     		conn.commit()
 
-		cursor.execute("INSERT INTO store_wine(sys_wine_id, sys_store_id, inventory)VALUES(%s, %s, %s)", (product_id, store_id, product_inventory))
-		conn.commit()
+    	cursor.execute("SELECT * FROM store_wine WHERE sys_wine_id = %s and sys_store_id = %s", (product_id, store_id))
+    	result = cursor.fetchone()
+    	if result == None:
+			cursor.execute("INSERT INTO store_wine(sys_wine_id, sys_store_id, inventory)VALUES(%s, %s, %s)", (product_id, store_id, product_inventory))
+			conn.commit()
 
 	global store_index
 	next_page = meta_data['NextPage']
