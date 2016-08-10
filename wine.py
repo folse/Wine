@@ -58,8 +58,10 @@ def get_store_wine(wine_subcategory,store_id,page):
 	global store_index
 	next_page = meta_data['NextPage']
 	if next_page > 0:
+		print 'next_page > 0'
 		get_store_wine(wine_subcategory,store_id,next_page)
 	else:
+		print 'get next store info'
 		store_index += 1
 		save_store_info(store_array[store_index])
 
