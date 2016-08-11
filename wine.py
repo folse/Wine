@@ -40,8 +40,9 @@ def get_store_wine(wine_subcategory,store_id,page):
 		
 		product = product_array[i]
 
-		product_name = str(product['ProductNameBold']).encode("utf-8") + ' ' + str(product['ProductNameThin']).encode("utf-8")
+		global product_id
 		product_id = product['ProductId']
+		product_name = str(product['ProductNameBold']).encode("utf-8") + ' ' + str(product['ProductNameThin']).encode("utf-8")
 		product_number = product['ProductNumber']
 		product_inventory = product['QuantityText']
 		product_url = product['ProductUrl']
@@ -78,17 +79,7 @@ def save_store_info(store_info):
 	if result == None:
 		cursor.execute("INSERT INTO store(sys_store_id, name, city) VALUES (%s,%s,%s)", (store_id, store_name, store_city))
     	conn.commit()
-	get_store_wine(wine_subcategory,store_id,0)
-
-def split_array(store_array):
-	store_index = 0
-	if len(store_array) > 100:
-		working_array = store_array[:100]
-		save_store_info(working_array[store_index])
-		store_array = store_array[100:]
-		split_array(store_array)
-	else:
-		save_store_info(store_array[store_index])
+	#get_store_wine(wine_subcategory,store_id,0)
 
 if __name__ == '__main__':
 
@@ -98,8 +89,11 @@ if __name__ == '__main__':
 	wine_subcategory = u'Rött vin'
 
 	store_array = STORE_LIST.split('&')
-	store_index = 0
-	split_array(store_array)
+	# store_index = 0
+	# save_store_info(store_array[store_index])
+
+	for i in range(len(store_array)):
+		save_store_info(store_array[i])
 
 
 	cursor.close()
