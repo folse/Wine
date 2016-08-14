@@ -32,17 +32,11 @@ class WineSpider(Spider):
 
         p_button_array = response.xpath('(//div[@class="details-list"]/ul/li/p)[5]/button/text()').extract()
         
-        first_button_text = p_button_array[0]
-
         new_p_button_array = []
 
         for i in range(len(p_button_array)):
             if len(p_button_array[i].strip()) > 0:
-                new_p_button_array.append(p_button_array[i])
-
-        print p_text_array
-
-        print new_p_button_array
+                new_p_button_array.append(p_button_array[i].strip())
 
         longest_text_array_length = 0
 
@@ -51,9 +45,8 @@ class WineSpider(Spider):
         else:
             longest_text_array_length = len(new_p_button_array)
 
-        assume_first_p_text = p_node_string[3:len(first_button_text)]
 
-        if assume_first_p_text == first_button_text:
+        if p_node_string[3:10] == '<button':
             print 'Yes!'
 
             for i in range(longest_text_array_length):
@@ -68,8 +61,6 @@ class WineSpider(Spider):
                     button_text_item = new_p_button_array[i]
 
                 ingredient_string = ingredient_string + button_text_item + p_text_item
-
-            print ingredient_string
 
         else:
 
@@ -86,22 +77,19 @@ class WineSpider(Spider):
 
                 ingredient_string = ingredient_string + p_text_item + button_text_item 
 
-            print ingredient_string
-
             print 'No!'
 
         item = WineItem()
 
-        info_array = response.xpath('//div[@class="details-list"]/ul/li/p/text()').extract()
-
-        item['sales_start'] = info_array[0]
-        item['alcohol'] = info_array[1]
-        item['color'] = info_array[2]
-        item['fragrance'] = info_array[3]
+        item['sales_start'] = response.xpath('(//div[@class="details-list"]/ul/li)[1]/p/text()').extract()[0]
+        item['alcohol'] = response.xpath('(//div[@class="details-list"]/ul/li)[2]/p/text()').extract()[0]
+        item['color'] = response.xpath('(//div[@class="details-list"]/ul/li)[3]/p/text()').extract()[0]
+        item['fragrance'] = response.xpath('(//div[@class="details-list"]/ul/li)[4]/p/text()').extract()[0]
         item['ingredient'] = ingredient_string
-        item['sugar'] = info_array[5]
-        item['producer'] = info_array[6]
-        item['supplier'] = info_array[7]
+        item['sugar'] = response.xpath('(//div[@class="details-list"]/ul/li)[6]/p/text()').extract()[0]
+        item['producer'] = response.xpath('(//div[@class="details-list"]/ul/li)[7]/p/text()').extract()[0]
+        item['supplier'] = response.xpath('(//div[@class="details-list"]/ul/li)[8]/p/text()').extract()[0]
+
 
         number = self.start_urls[0].split('-')[len(self.start_urls[0].split('-'))-1]
 
