@@ -62,22 +62,6 @@ def get_store_wine(wine_subcategory,store_id,page):
 	if next_page > 0:
 		print 'next_page > 0'
 		get_store_wine(wine_subcategory,store_id,next_page)
-	# else:
-	# 	print 'get next store info'
-	# 	store_index += 1
-	# 	save_store_info(store_array[store_index])
-
-# def save_store_info(store_info):
-# 	store_id = store_info.split(',')[0]
-# 	store_name = store_info.split(',')[1]
-# 	store_city = store_info.split(',')[2]
-
-# 	exist = cursor.execute("select * from store where id = %s", (store_id,))
-# 	result = cursor.fetchone()
-# 	if result == None:
-# 		cursor.execute("INSERT INTO store(sys_store_id, name, city) VALUES (%s,%s,%s)", (store_id, store_name, store_city))
-#     	conn.commit()
-	#get_store_wine(wine_subcategory,store_id,0)
 
 if __name__ == '__main__':
 
@@ -92,8 +76,7 @@ if __name__ == '__main__':
 		exist = cursor.execute("select * from store where id = %s", [i])
 		result = cursor.fetchone()
 		if result != None:
-			print result[1]
-			print "////////////////////////"
+			print "////////////////////////  " + result[1]
 			get_store_wine(wine_subcategory,result[1],0)
 
 	cursor.close()

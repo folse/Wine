@@ -16,7 +16,7 @@ class WinePipeline(object):
         dispatcher.connect(self.finalize,signals.engine_stopped)
 
     def process_item(self,item,spider):
-        print item
+        
         cursor = self.conn.cursor()
     	exist = cursor.execute("SELECT * FROM wine WHERE number = %s", (item['number'],))
         result = cursor.fetchone()
