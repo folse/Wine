@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
 	for i in range(rows_count):
 		update_wine_info(i+1)
-		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + i
+		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + str(i)
 
 	cursor.close()
 	conn.close()
