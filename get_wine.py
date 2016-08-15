@@ -70,13 +70,13 @@ if __name__ == '__main__':
 
 	wine_subcategory = u'Rött vin'
 
-	cursor.execute("select max(id) from store")
+	cursor.execute("SELECT COUNT(*) FROM store")
 	result = cursor.fetchone()
-	for i in xrange(1,result[0]+1):
-		exist = cursor.execute("select * from store where id = %s", [i])
+	for i in range(result[0]):
+		exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i])
 		result = cursor.fetchone()
 		if result != None:
-			print "////////////////////////  " + result[1]
+			print "//////////  " + result[1]
 			get_store_wine(wine_subcategory,result[1],0)
 
 	cursor.close()
