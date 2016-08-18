@@ -1,7 +1,7 @@
 from . import admin
 from flask import redirect
-from flask.ext.login import current_user
-from flask.ext.admin.contrib.sqla import ModelView as _ModelView
+from flask_login import current_user
+from flask_admin.contrib.sqla import ModelView as _ModelView
 from .models import *
 
 class ModelView(_ModelView):

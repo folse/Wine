@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import os
 from wine import app
-from flask.ext.script import Manager, Server, Shell
-from flask.ext.migrate import MigrateCommand
+from flask_script import Manager, Server, Shell
+from flask_migrate import MigrateCommand
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
