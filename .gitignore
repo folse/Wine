@@ -1,2 +1,5 @@
 *.pyc
 .DS_Store
+flask/alembic.ini
+flask/env
+flask/migrations
