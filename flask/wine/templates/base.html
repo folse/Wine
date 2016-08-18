@@ -1,0 +1,65 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Management{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<!-- <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"> -->
+<link rel="apple-touch-icon" href="http://7xkiee.com2.z0.glb.qiniucdn.com/180%20-%20iPhone%206%20Plus-1.png" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container header_height">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}"><img alt="logo" src="{{ url_for('static', filename='img/bt_logo.png') }}"></a>
+        </div>
+        <!-- <div class="navbar-collapse collapse"> -->
+            <ul class="nav navbar-nav fr">
+                {% if current_user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown">
+                        {{ current_user.username }}<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('auth.change_password') }}">修改密码</a></li>
+                        <!-- <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li> -->
+                        <li><a href="{{ url_for('auth.logout') }}">退出登录</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li><a href="{{ url_for('auth.login') }}">管理员登录</a></li>
+                {% endif %}
+            </ul>
+        <!-- </div> -->
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+{{ moment.include_moment(local_js='http://7u2mcc.com1.z0.glb.clouddn.com/moment-with-locales.min.js') }}
+<script>
+    $(document).ready(function() {
+      $('.js-activated').dropdownHover();
+    });
+</script>
+<script src="{{ url_for('static', filename='js/twitter-bootstrap-hover-dropdown.min.js') }}"></script>
+
+{% endblock %}

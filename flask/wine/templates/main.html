@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Management{% endblock %}
+
+{% block page_content %}
+
+{% if permission %}
+
+  <div class="header clearfix">
+      <nav>
+        <ul class="nav nav-pills pull-right">
+<!--           <a class="btn btn-lg btn-default" type="button" href="{{ url_for('.new_customer') }}">新客户</a> -->
+        </ul>
+      </nav>
+      <h3 class="text-muted">Stores</h3>
+  </div>
+  {% include 'customers.html' %}
+
+{% else %}
+
+  <div class="header clearfix">
+      <nav>
+        <ul class="nav nav-pills pull-right">
+<!--           <a class="btn btn-lg btn-default" type="button" href="{{ url_for('.new_community_customer') }}">新客户</a> -->
+        </ul>
+      </nav>
+      <h3 class="text-muted">Stores</h3>
+  </div>
+  {% include 'community_customers.html' %}
+
+{% endif %}
+
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+{% if permission %}
+<script>
+  $(function () {
+      $("table > tbody > tr").click(function () {
+          location.href = $(this).find("a").attr("href");
+      });
+  })
+</script>
+{% endif %}
+
+{% endblock %}

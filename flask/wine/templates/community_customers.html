@@ -1,0 +1,20 @@
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+      	<thead>
+        	<tr>
+          		<th>家长姓名</th>
+              <th>联系方式</th>
+          		<th>当前状态</th>
+        	</tr>
+      	</thead>
+      	<tbody>
+        	{% for customer in customers %}
+        		<tr>
+              <td>{{ customer.name }}</td>
+              <td>{{ customer.phone }}</td>
+              <td>{{ g.info_status_to_title_dict[customer.info_status] }}<a href="customer/{{ customer.id }}"></a></td>
+      			</tr>
+   			{% endfor %}
+      	</tbody>
+    </table>
+</div>
