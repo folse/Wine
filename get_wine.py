@@ -37,32 +37,36 @@ def get_store_wine(wine_subcategory,store_id,sys_store_id,page):
 	count = 0
 	while (count < len(product_array)):
 		product = product_array[count]
-		print product['ProductId']
-		
-    	product_id = product['ProductId']
-    	product_name = str(product['ProductNameBold']).encode("utf-8") + ' ' + str(product['ProductNameThin']).encode("utf-8")
-    	product_number = product['ProductNumber']
-    	product_inventory = product['QuantityText']
-    	product_url = product['ProductUrl']
-    	wine_id = 0
-
-    	cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
-    	result = cursor.fetchone()
-    	if result == None:
-			wine_id = cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s) returning id", (product_id, product_name, product_number, product_url))
-			conn.commit()
-    	else:
-    		wine_id = result[0]
-
-		print wine_id
-
-		cursor.execute("INSERT INTO inventory(wine_id, store_id, inventory)VALUES(%s, %s, %s)", (wine_id, store_id, product_inventory))
-		conn.commit()
+		save_wine_info(product, store_id)
 		count = count + 1
 
 	next_page = meta_data['NextPage']
 	if next_page > 0:
 		get_store_wine(wine_subcategory,store_id,sys_store_id,next_page)
+
+def save_wine_info(product, store_id):
+    product_id = product['ProductId']
+    product_name = str(product['ProductNameBold']).encode("utf-8") + ' ' + str(product['ProductNameThin']).encode("utf-8")
+    product_number = product['ProductNumber']
+    product_inventory = product['QuantityText']
+    product_url = product['ProductUrl']
+    wine_id = 0
+
+    cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
+    result = cursor.fetchone()
+    if result == None:
+        wine_id = cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s) returning id", (product_id, product_name, product_number, product_url))
+        conn.commit()
+        print 'Inserted a new wine'
+    else:
+        wine_id = result[0]
+
+    print wine_id
+
+    product_inventory = product_inventory[:-3]
+
+    cursor.execute("INSERT INTO inventory(wine_id, store_id, inventory)VALUES(%s, %s, %s)", (wine_id, store_id, product_inventory))
+    conn.commit()
 
 if __name__ == '__main__':
 
