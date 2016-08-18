@@ -19,32 +19,9 @@ def register_request(app):
         db.session.commit()
         return resp
 
-# @main.route('/', methods=['GET', 'POST'])
-# def index():
-#     if current_user.is_authenticated:
-#         page=request.args.get('page', 1, type=int)
-
-#         permission=False
-#         for role in current_user.roles:
-#             if role.name == 'operator' or role.name == 'admin':
-#                 permission=True
-#                 pass 
-
-#         if permission:
-#             pagination=Wine.query.order_by(Wine.created_at.desc()).paginate(
-#             page, per_page=current_app.config['CUSTOMERS_PER_PAGE'],
-#             error_out=False)
-#         else:
-#             pagination=Wine.query.filter_by(specialist=current_user).order_by(Wine.created_at.desc()).paginate(
-#             page, per_page=current_app.config['CUSTOMERS_PER_PAGE'],
-#             error_out=False)
-#         wines=pagination.items
-
-#         return render_template('main.html', permission=permission, wines=wines, pagination=pagination)
-
-#     else :
-
-#         return redirect(url_for('auth.register_specialist'))
+@main.route('/', methods=['GET', 'POST'])
+def index():
+    return redirect('/admin')
 
 # @main.route('/wines', methods=['GET'])
 # @login_required
