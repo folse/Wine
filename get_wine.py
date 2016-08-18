@@ -15,13 +15,13 @@ reload(sys)
 sys.setdefaultencoding('utf8')   
 sys.setrecursionlimit(1000000)
 
-def get_store_wine(wine_subcategory,store_id,page):
+def get_store_wine(wine_subcategory,store_id,sys_store_id,page):
 
-	request_data = urllib.urlencode({'subcategory':wine_subcategory,'sortdirection':'Ascending','site':store_id,'fullassortment':'0','page':page}) 
+	request_data = urllib.urlencode({'subcategory':wine_subcategory,'sortdirection':'Ascending','site':sys_store_id,'fullassortment':'0','page':page}) 
 
 	request_url = 'http://www.systembolaget.se/api/productsearch/search?' + request_data.replace('+','%20')
 
-	print str(store_id) + ',' + str(page)
+	print 'store: ' + str(store_id) + ', page:' + str(page)
 
 	try:
 		resp = urllib2.urlopen(request_url).read()
@@ -34,34 +34,35 @@ def get_store_wine(wine_subcategory,store_id,page):
 	meta_data = resp_json['Metadata']
 	product_array = resp_json['ProductSearchResults']
 
-	for i in range(len(product_array)):
+	count = 0
+	while (count < len(product_array)):
+		product = product_array[count]
+		print product['ProductId']
 		
-		product = product_array[i]
+    	product_id = product['ProductId']
+    	product_name = str(product['ProductNameBold']).encode("utf-8") + ' ' + str(product['ProductNameThin']).encode("utf-8")
+    	product_number = product['ProductNumber']
+    	product_inventory = product['QuantityText']
+    	product_url = product['ProductUrl']
+    	wine_id = 0
 
-		global product_id
-		product_id = product['ProductId']
-		product_name = str(product['ProductNameBold']).encode("utf-8") + ' ' + str(product['ProductNameThin']).encode("utf-8")
-		product_number = product['ProductNumber']
-		product_inventory = product['QuantityText']
-		product_url = product['ProductUrl']
-
-		cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
-		result = cursor.fetchone()
-		if result == None:
-			cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s)", (product_id, product_name, product_number, product_url))
-    		conn.commit()
-
-    	cursor.execute("SELECT * FROM store_wine WHERE sys_wine_id = %s and sys_store_id = %s", (product_id, store_id))
+    	cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
     	result = cursor.fetchone()
     	if result == None:
-			cursor.execute("INSERT INTO store_wine(sys_wine_id, sys_store_id, inventory)VALUES(%s, %s, %s)", (product_id, store_id, product_inventory))
+			wine_id = cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s) returning id", (product_id, product_name, product_number, product_url))
 			conn.commit()
+    	else:
+    		wine_id = result[0]
 
-	# global store_index
+		print wine_id
+
+		cursor.execute("INSERT INTO inventory(wine_id, store_id, inventory)VALUES(%s, %s, %s)", (wine_id, store_id, product_inventory))
+		conn.commit()
+		count = count + 1
+
 	next_page = meta_data['NextPage']
 	if next_page > 0:
-		print 'next_page > 0'
-		get_store_wine(wine_subcategory,store_id,next_page)
+		get_store_wine(wine_subcategory,store_id,sys_store_id,next_page)
 
 if __name__ == '__main__':
 
@@ -73,11 +74,11 @@ if __name__ == '__main__':
 	cursor.execute("SELECT COUNT(*) FROM store")
 	result = cursor.fetchone()
 	for i in range(result[0]):
-		exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i])
+		exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i+1])
 		result = cursor.fetchone()
 		if result != None:
-			print "//////////  " + result[1]
-			get_store_wine(wine_subcategory,result[1],0)
+			print "//////////  " + result[1] + " " + result[3]
+			get_store_wine(wine_subcategory, i+1, result[3], 0)
 
 	cursor.close()
 	conn.close()
