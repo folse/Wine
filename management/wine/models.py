@@ -150,5 +150,6 @@ class Inventory(db.Model):
     wine_id = db.Column(db.Integer())
     store_id = db.Column(db.Integer())
     inventory = db.Column(db.Integer())
+    period = db.Column(db.Integer())
     created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)

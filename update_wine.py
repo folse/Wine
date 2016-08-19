@@ -14,7 +14,7 @@ def update_wine_info(index_id):
 	cursor.execute("SELECT * FROM wine WHERE id = %s", (index_id,))
 	row = cursor.fetchone()
 	if row != None:	
-		wine_number = row[12]
+		wine_number = row[11]
 		get_wine_info(wine_number)
 
 def get_wine_info(wine_number):
@@ -108,8 +108,8 @@ if __name__ == '__main__':
 	rows_count = cursor.fetchone()[0]
 
 	for i in range(rows_count):
+		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + str(i+1)
 		update_wine_info(i+1)
-		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + str(i)
 
 	cursor.close()
 	conn.close()

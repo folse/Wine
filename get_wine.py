@@ -67,24 +67,47 @@ def save_wine_info(product, store_id):
 
     product_inventory = product_inventory[:-3]
 
-    cursor.execute("INSERT INTO inventory(wine_id, store_id, inventory, updated_at) VALUES (%s, %s, %s, %s)", (wine_id, store_id, product_inventory, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    cursor.execute("INSERT INTO inventory(wine_id, store_id, inventory, period, updated_at) VALUES (%s, %s, %s, %s, %s)", (wine_id, store_id, product_inventory, update_time_period, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     conn.commit()
+
+def get_update_time_period():
+
+	current_hour_string = datetime.datetime.now().strftime('%H')
+
+	if current_hour_string[0] == '0':
+		current_hour_string = current_hour_string[1]
+
+	current_hour = int(current_hour_string)
+
+	if current_hour < 11:
+		return 1
+	elif current_hour < 15:
+		return 2
+	elif current_hour < 23:
+		return 3
+
+	return 0
 
 if __name__ == '__main__':
 
-	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
-	cursor = conn.cursor()
 
 	wine_subcategory = u'Rött vin'
 
-	cursor.execute("SELECT COUNT(*) FROM store")
-	result = cursor.fetchone()
-	for i in range(result[0]):
-		exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i+1])
-		result = cursor.fetchone()
-		if result != None:
-			print "//////////  " + result[1] + " " + result[3]
-			get_store_wine(wine_subcategory, i+1, result[3], 0)
+	global update_time_period
+	update_time_period = get_update_time_period()
+	print update_time_period
 
-	cursor.close()
-	conn.close()
+	# conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
+	# cursor = conn.cursor()
+
+	# cursor.execute("SELECT COUNT(*) FROM store")
+	# result = cursor.fetchone()
+	# for i in range(result[0]):
+	# 	exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i+1])
+	# 	result = cursor.fetchone()
+	# 	if result != None:
+	# 		print "//////////  " + result[1] + " " + result[3]
+	# 		get_store_wine(wine_subcategory, i+1, result[3], 0)
+
+	# cursor.close()
+	# conn.close()
