@@ -90,10 +90,11 @@ html body div.navbar.navbar-inverse div.container div.navbar-header a.navbar-bra
 
 .navbar-inverse .navbar-nav > li > a {
     color: #f3f3f3;
+    text-align:center;
 }
 
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:focus, .navbar-inverse .navbar-nav > .open > a:hover {
-    background-color: #00d8e6;
+    background-color: #fe3e79;
     color: #fff;
 }
 
@@ -117,7 +118,7 @@ html body div.navbar.navbar-inverse div.container div.navbar-header a.navbar-bra
 }
 
 .open{
-    width:89px;
+    width:68px;
 }
 .navbar-nav{
     height:50px;
@@ -138,7 +139,6 @@ html body div.navbar.navbar-inverse div.container div.navbar-header a.navbar-bra
         border:1px solid #ccc!important;
         z-index:1000!important;
         background-color: #fff!important;
-
     }
     .dropdown{
         height:50px;
@@ -147,10 +147,9 @@ html body div.navbar.navbar-inverse div.container div.navbar-header a.navbar-bra
         height:50px;
     }
     .dropdown-menu>li>a{
-    color:#262626 !important;
+        color:#262626 !important;
     }
     .dropdown-menu li a:hover{
-        
         background-color: #f5f5f5!important;
     }
     .table-responsive{

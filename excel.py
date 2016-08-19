@@ -39,7 +39,6 @@ if __name__ == '__main__':
 
 	book.save(inventory_file_name)
 
-
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
 	cursor.execute("select max(id) from store")

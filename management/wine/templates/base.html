@@ -24,13 +24,11 @@
                         {{ current_user.username }}<b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('auth.change_password') }}">修改密码</a></li>
+                        <!-- <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li> -->
                         <!-- <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li> -->
-                        <li><a href="{{ url_for('auth.logout') }}">退出登录</a></li>
+                        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                     </ul>
                 </li>
-                {% else %}
-                <li><a href="{{ url_for('auth.login') }}">管理员登录</a></li>
                 {% endif %}
             </ul>
         <!-- </div> -->

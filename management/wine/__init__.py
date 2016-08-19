@@ -26,11 +26,9 @@ from .admin import *
 
 from main import main
 from auth import auth
-from specialist import specialist
 
 app.register_blueprint(main)
 app.register_blueprint(auth, url_prefix='/auth')
-app.register_blueprint(specialist, url_prefix='/specialist')
 
 # Maybe better for China
 app.extensions['bootstrap']['cdns']['jquery'] = WebCDN('//cdn.bootcss.com/jquery/2.1.4/')

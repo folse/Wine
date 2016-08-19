@@ -66,7 +66,7 @@ def save_wine_info(product, store_id):
 
     product_inventory = product_inventory[:-3]
 
-    cursor.execute("INSERT INTO inventory(wine_id, store_id, inventory)VALUES(%s, %s, %s)", (wine_id, store_id, product_inventory))
+    cursor.execute("INSERT INTO inventory(wine_id, store_id, inventory, updated_at) VALUES (%s, %s, %s, %s)", (wine_id, store_id, product_inventory, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     conn.commit()
 
 if __name__ == '__main__':

@@ -19,9 +19,10 @@ def register_request(app):
         db.session.commit()
         return resp
 
+@login_required
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return redirect('/auth/login')
+    return redirect('/admin/wine')
 
 # @main.route('/wines', methods=['GET'])
 # @login_required

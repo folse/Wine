@@ -9,6 +9,10 @@ class ModelView(_ModelView):
     column_display_pk = True
 
     def is_accessible(self):
+
+        if current_user.is_anonymous:
+            return False
+
     	for role in current_user.roles:
         	if role.name == 'admin':
         		return True
@@ -24,18 +28,21 @@ class UserAdmin(ModelView):
 
 class WineAdmin(ModelView):
     list_template = 'admin/list.html'
+    can_create = False
     can_delete = False
-    # can_edit = False
+    can_edit = False
     column_searchable_list = ['id', 'name', 'number']
     column_exclude_list = ['id', 'sys_wine_id', 'status', 'url', 'fragrance', 'color', 'sugar', 'ingredient', 'created_at', 'updated_at']
 
 class StoreAdmin(ModelView):
+    can_create = False
     can_delete = False
     can_edit = False
     column_searchable_list = ['id', 'name', 'city', 'sys_store_id']
     column_exclude_list = ['created_at', 'updated_at']
 
 class InventoryAdmin(ModelView):
+    can_create = False
     can_delete = False
     can_edit = False
     column_searchable_list = ['id', 'inventory','wine_id', 'store_id']
