@@ -102,8 +102,6 @@ def parse_wine_info(resp,wine_number):
 	
 if __name__ == '__main__':
 
-	os.chdir("scrapy_wine")
-
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
 	cursor.execute("SELECT COUNT(*) FROM wine")
