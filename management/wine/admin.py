@@ -15,7 +15,7 @@ class ModelView(_ModelView):
         return False
 
     def inaccessible_callback(self, name):
-        return redirect('/')
+        return redirect('/auth/login')
 
 class UserAdmin(ModelView):
     can_delete = False

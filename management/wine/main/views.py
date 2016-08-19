@@ -21,7 +21,7 @@ def register_request(app):
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return redirect('/admin')
+    return redirect('/auth/login')
 
 # @main.route('/wines', methods=['GET'])
 # @login_required

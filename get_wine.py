@@ -55,8 +55,9 @@ def save_wine_info(product, store_id):
     cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
     result = cursor.fetchone()
     if result == None:
-        wine_id = cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s) returning id", (product_id, product_name, product_number, product_url))
+        cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s) RETURNING id", (product_id, product_name, product_number, product_url))
         conn.commit()
+        wine_id = cursor.fetchone()[0]
         print 'Inserted a new wine'
     else:
         wine_id = result[0]

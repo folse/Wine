@@ -117,10 +117,6 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-stores_wines = db.Table('stores_wines',
-        db.Column('wine_id', db.Integer(), db.ForeignKey('wine.id')),
-        db.Column('store_id', db.Integer(), db.ForeignKey('store.id')))
-
 class Wine(db.Model):
     __tablename__ = 'wine'
     id = db.Column(db.Integer, primary_key=True)
@@ -147,7 +143,6 @@ class Store(db.Model):
     sys_store_id = db.Column(db.String(64), unique=True, index=True)
     created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    wines = db.relationship('Wine', secondary=stores_wines, backref=db.backref('stores', lazy='dynamic'))
 
 class Inventory(db.Model):
     __tablename__ = 'inventory'
