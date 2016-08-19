@@ -90,24 +90,23 @@ def get_update_time_period():
 
 if __name__ == '__main__':
 
-
 	wine_subcategory = u'Rött vin'
 
 	global update_time_period
 	update_time_period = get_update_time_period()
 	print update_time_period
 
-	# conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
-	# cursor = conn.cursor()
+	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
+	cursor = conn.cursor()
 
-	# cursor.execute("SELECT COUNT(*) FROM store")
-	# result = cursor.fetchone()
-	# for i in range(result[0]):
-	# 	exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i+1])
-	# 	result = cursor.fetchone()
-	# 	if result != None:
-	# 		print "//////////  " + result[1] + " " + result[3]
-	# 		get_store_wine(wine_subcategory, i+1, result[3], 0)
+	cursor.execute("SELECT COUNT(*) FROM store")
+	result = cursor.fetchone()
+	for i in range(result[0]):
+		exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i+1])
+		result = cursor.fetchone()
+		if result != None:
+			print "//////////  " + result[1] + " " + result[3]
+			get_store_wine(wine_subcategory, i+1, result[3], 0)
 
-	# cursor.close()
-	# conn.close()
+	cursor.close()
+	conn.close()

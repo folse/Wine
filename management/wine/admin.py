@@ -46,7 +46,7 @@ class InventoryAdmin(ModelView):
     can_delete = False
     can_edit = False
     column_searchable_list = ['id', 'inventory','wine_id', 'store_id']
-    column_exclude_list = ['created_at']
+    column_exclude_list = ['id', 'created_at']
 
 class RoleAdmin(ModelView):
     column_searchable_list = ['id', 'name']
