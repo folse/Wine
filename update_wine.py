@@ -105,7 +105,7 @@ def get_date_from_timestamp(time_stamp_info):
 	else:
 		time_stamp = int(time_stamp_info[6:15])
 
-	return time.strftime("%Y-%m-%d", time.gmtime(time_stamp))
+	return time.strftime("%Y-%m-%d", time.gmtime(time_stamp + 7200))
 
 if __name__ == '__main__':
 
