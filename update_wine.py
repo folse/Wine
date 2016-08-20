@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
 		wine_name = row[1]
 
-		if wine_name[:-5] == ' None':
+		if wine_name[-5:] == ' None':
 			print wine_name
 			wine_name = wine_name[:len(wine_name)-5]
 			print wine_name
