@@ -38,6 +38,7 @@ def get_wine_info(wine_number):
 		resp = urllib2.urlopen(req).read()
 		parse_wine_info(resp,wine_number)
 	except Exception, e:
+		print e
 		time.sleep(300)
 		resp = urllib2.urlopen(req).read()
 		parse_wine_info(resp,wine_number)
@@ -59,6 +60,7 @@ def parse_wine_info(resp,wine_number):
     	sugar = ''
     	producer = ''
     	supplier = ''
+
     	if data.has_key('Artiklar'):
 			for i in range(len(data['Artiklar'])):
 				wine_detail_number = data['Artiklar'][i]['ArtikelNr']
@@ -96,14 +98,15 @@ def parse_wine_info(resp,wine_number):
 
 def get_date_from_timestamp(time_stamp_info):
 	
-	if time_stamp[0] == '1':
+	time_stamp = 0
+
+	if time_stamp_info[6] == '1':
 		time_stamp = int(time_stamp_info[6:16])
 	else:
 		time_stamp = int(time_stamp_info[6:15])
 
 	return time.strftime("%Y-%m-%d", time.gmtime(time_stamp))
 
-	
 if __name__ == '__main__':
 
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
