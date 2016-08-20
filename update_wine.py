@@ -128,7 +128,7 @@ if __name__ == '__main__':
 			wine_name = wine_name[:len(wine_name)-5]
 			print wine_name
 
-			cursor.execute("UPDATE wine SET(name) = (%s) WHERE number = %s", (wine_name, wine_number))
+			cursor.execute("UPDATE wine SET(name) = (%s) WHERE id = %s", (wine_name, row[0]))
 			conn.commit()
 
 		
