@@ -111,12 +111,27 @@ if __name__ == '__main__':
 
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
-	cursor.execute("SELECT COUNT(*) FROM wine")
-	rows_count = cursor.fetchone()[0]
+	cursor.execute("SELECT * FROM wine")
+	result = cursor.fetchall()
+	# rows_count = result[0]
 
-	for i in range(rows_count):
-		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + str(i+1)
-		update_wine_info(i+1)
+	for row in result:
+		# print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + str(i+1)
+		#update_wine_info(i+1)
+
+		#just for once fix
+
+		wine_name = row[1]
+
+		if wine_name[:-5] == ' None':
+			print wine_name
+			wine_name = wine_name[:len(wine_name)-5]
+			print wine_name
+
+			cursor.execute("UPDATE wine SET(name) = (%s) WHERE number = %s", (wine_name, wine_number))
+			conn.commit()
+
+		
 
 	cursor.close()
 	conn.close()
