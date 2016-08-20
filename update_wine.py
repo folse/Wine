@@ -90,6 +90,7 @@ def parse_wine_info(resp,wine_number):
 		print wine_number
 		print sales_start
     	print alcohol
+    	print 'Hi'
     	print color
     	print fragrance
     	print ingredient
