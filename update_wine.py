@@ -66,9 +66,7 @@ def parse_wine_info(resp,wine_number):
 					wine_info = data['Artiklar'][i]
 
 			if wine_info.has_key('Saljstartsdatum'):
-				time_stamp = int(wine_info['Saljstartsdatum'][6:16])
-	    		print time_stamp
-	    		sales_start = time.strftime("%Y-%m-%d", time.localtime(time_stamp))
+				sales_start = get_date_from_timestamp(wine_info['Saljstartsdatum'])
 
 			if wine_info.has_key('Alkoholhalt'):
 				alcohol = str(wine_info['Alkoholhalt']) + ' %'
@@ -95,6 +93,16 @@ def parse_wine_info(resp,wine_number):
 			print sales_start
 			cursor.execute("UPDATE wine SET(sales_start, alcohol, color, fragrance, ingredient, sugar, producer, supplier, updated_at) = (%s,%s,%s,%s,%s,%s,%s,%s,%s) WHERE number = %s", (sales_start, alcohol, color, fragrance, ingredient, sugar, producer, supplier, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), wine_number))
 			conn.commit()
+
+def get_date_from_timestamp(time_stamp_info):
+	
+	if time_stamp[0] == '1':
+		time_stamp = int(time_stamp_info[6:16])
+	else:
+		time_stamp = int(time_stamp_info[6:15])
+
+	return time.strftime("%Y-%m-%d", time.gmtime(time_stamp))
+
 	
 if __name__ == '__main__':
 
