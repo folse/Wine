@@ -47,7 +47,11 @@ def get_store_wine(wine_subcategory,store_id,sys_store_id,page):
 
 def save_wine_info(product, store_id):
     product_id = product['ProductId']
-    product_name = str(product['ProductNameBold']).encode("utf-8") + ' ' + str(product['ProductNameThin']).encode("utf-8")
+    product_name = str(product['ProductNameBold']).encode("utf-8")
+
+    if product['ProductNameThin'] != None:
+    	product_name = product_name + ' ' + str(product['ProductNameThin']).encode("utf-8")
+
     product_number = product['ProductNumber']
     product_inventory = product['QuantityText']
     product_url = product['ProductUrl']
