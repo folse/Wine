@@ -79,11 +79,11 @@ def get_update_time_period():
 
 	current_hour = int(current_hour_string)
 
-	if current_hour < 11:
+	if current_hour < 10:
 		return 1
-	elif current_hour < 15:
+	elif current_hour < 14:
 		return 2
-	elif current_hour < 23:
+	elif current_hour < 22:
 		return 3
 
 	return 0
