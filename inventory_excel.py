@@ -15,10 +15,23 @@ reload(sys)
 
 inventory_file_name = 'inventory_%s.xls' % time.strftime('%Y-%m-%d',time.localtime(time.time()))
 
+def write_30days_period(wine_id,store_id,read_sheet):
+	for i in xrange(1,31):
+		j = 3
+		while (j > 0):
+			day_period = get_day(i) + '-' +str(j)
+			j-=1
+			column = (i-1)*3+(3-j)
+
+			cursor.execute("select inventory from inventory where wine_id = %s and store_id = %s and day_period = %s", (wine_id, store_id, day_period))
+			result = cursor.fetchone()
+			if result != None:
+				inventory = result[0]
+				sheet.write(read_sheet.nrows,1+column,inventory)
+
 def get_last_day_period():
 
 	return get_day(1) + '-3'
-
 
 def get_day(fix_day):
 
@@ -29,14 +42,9 @@ def get_day(fix_day):
 
 	return day_string
 
-def write_30days_period(read_sheet):
-	for i in xrange(1,31):
-		j = 3
-		while (j > 0):
-			day_period = get_day(i) + '-' +str(j)
-			j-=1
-			column = (i-1)*3+(3-j)
-			sheet.write(read_sheet.nrows,1+column,day_period)
+def remove_old_file():
+	if os.path.isfile(inventory_file_name): 
+		os.remove(inventory_file_name)
 
 def write_30days_title(read_sheet):
 	hour_period_array = ['10:00', '14:00', '22:00']
@@ -48,10 +56,6 @@ def write_30days_title(read_sheet):
 			column = (i-1)*3+(3-j)
 
 			sheet.write(read_sheet.nrows+2,1+column,day_period)
-
-def remove_old_file():
-	if os.path.isfile(inventory_file_name): 
-		os.remove(inventory_file_name)
 
 if __name__ == '__main__':
 
@@ -91,20 +95,25 @@ if __name__ == '__main__':
 			write_30days_title(read_sheet)
 			book.save(inventory_file_name)
 
-			cursor.execute("select wine_id from inventory where store_id = %s and day_period = %s", (store_id, get_last_day_period()))
+			cursor.execute("select * from inventory where store_id = %s and day_period = %s", (store_id, get_last_day_period()))
+			wine_array = cursor.fetchall()
 
-			# cursor.execute("select * from inventory where store_id = %s and period = %s", (store_id, update_time_period))
-			# inventory_array = cursor.fetchall()
-			# for i in range(len(inventory_array)):
+			for i in range(len(wine_array)):
 
-			# 	inventory = inventory_array[i]
-				
-			# 	read_book = xlrd.open_workbook(inventory_file_name)
-			# 	read_sheet = read_book.sheet_by_index(0)
-			# 	sheet.write(read_sheet.nrows,0,inventory[7])
-			# 	sheet.write(read_sheet.nrows,1,inventory[8])
-			# 	sheet.write(read_sheet.nrows,2,inventory[3])
-			# 	book.save(inventory_file_name)
+				wine = wine_array[i]
+				wine_id = wine[1]
+				wine_name = wine[6]
+				wine_number = wine[7]
+
+				print wine
+				read_book = xlrd.open_workbook(inventory_file_name)
+				read_sheet = read_book.sheet_by_index(0)
+				sheet.write(read_sheet.nrows,0,wine_name)
+				sheet.write(read_sheet.nrows,1,wine_number)
+
+				write_30days_period(wine_id, store_id, read_sheet)
+
+				book.save(inventory_file_name)
 	
 	cursor.close()
 	conn.close()

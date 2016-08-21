@@ -130,10 +130,10 @@ class Wine(db.Model):
     producer = db.Column(db.String(256))
     supplier = db.Column(db.String(256))
     url = db.Column(db.String(256))
-    number = db.Column(db.String(64))
+    number = db.Column(db.String(64), index=True)
     sys_wine_id = db.Column(db.String(64), unique=True, index=True)
-    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Store(db.Model):
     __tablename__ = 'store'
@@ -141,17 +141,17 @@ class Store(db.Model):
     name = db.Column(db.String(256))
     city = db.Column(db.String(256))
     sys_store_id = db.Column(db.String(64), unique=True, index=True)
-    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Inventory(db.Model):
     __tablename__ = 'inventory'
     id = db.Column(db.Integer, primary_key=True)
-    wine_id = db.Column(db.Integer())
+    wine_id = db.Column(db.Integer(), index=True)
     wine_name = db.Column(db.String(256))
-    wine_number = db.Column(db.String(64))
-    store_id = db.Column(db.Integer())
+    wine_number = db.Column(db.String(64), index=True)
+    store_id = db.Column(db.Integer(), index=True)
     inventory = db.Column(db.Integer())
-    day_period = db.Column(db.String(64))
-    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    day_period = db.Column(db.String(64), index=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow)

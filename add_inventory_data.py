@@ -34,3 +34,17 @@ if __name__ == '__main__':
 	conn.close()
 
 
+	# ---------- 
+
+	# conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
+	# cursor = conn.cursor()
+
+	# cursor.execute("UPDATE inventory SET day_period = '2016-08-20-3'")
+	# conn.commit()
+	
+	# cursor.close()
+	# conn.close()
+
+
+
+
