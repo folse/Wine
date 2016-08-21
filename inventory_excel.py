@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
 			store_info = 'Store Id: ' + store_id + ', Store Name: ' + store_name
 
-			print store_info
+			print store_id
 
 			read_book = xlrd.open_workbook(inventory_file_name)
 			read_sheet = read_book.sheet_by_index(0)
@@ -105,7 +105,6 @@ if __name__ == '__main__':
 				wine_name = wine[6]
 				wine_number = wine[7]
 
-				print wine
 				read_book = xlrd.open_workbook(inventory_file_name)
 				read_sheet = read_book.sheet_by_index(0)
 				sheet.write(read_sheet.nrows,0,wine_name)
