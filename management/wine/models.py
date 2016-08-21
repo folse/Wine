@@ -148,8 +148,10 @@ class Inventory(db.Model):
     __tablename__ = 'inventory'
     id = db.Column(db.Integer, primary_key=True)
     wine_id = db.Column(db.Integer())
+    wine_name = db.Column(db.String(256))
+    wine_number = db.Column(db.String(64))
     store_id = db.Column(db.Integer())
     inventory = db.Column(db.Integer())
-    period = db.Column(db.Integer())
+    day_period = db.Column(db.String(64))
     created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)

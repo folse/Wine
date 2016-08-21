@@ -46,21 +46,21 @@ def get_store_wine(wine_subcategory,store_id,sys_store_id,page):
 		get_store_wine(wine_subcategory,store_id,sys_store_id,next_page)
 
 def save_wine_info(product, store_id):
-    product_id = product['ProductId']
-    product_name = str(product['ProductNameBold']).encode("utf-8")
+    sys_wine_id = product['ProductId']
+    wine_name = str(product['ProductNameBold']).encode("utf-8")
 
     if product['ProductNameThin'] != None:
-    	product_name = product_name + ' ' + str(product['ProductNameThin']).encode("utf-8")
+    	wine_name = wine_name + ' ' + str(product['ProductNameThin']).encode("utf-8")
 
-    product_number = product['ProductNumber']
-    product_inventory = product['QuantityText']
-    product_url = product['ProductUrl']
+    wine_number = product['ProductNumber']
+    wine_inventory = product['QuantityText'][:-3]
+    wine_url = product['ProductUrl']
     wine_id = 0
 
-    cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (product_id,))
+    cursor.execute("SELECT * FROM wine WHERE sys_wine_id = %s", (sys_wine_id,))
     result = cursor.fetchone()
     if result == None:
-        cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s) RETURNING id", (product_id, product_name, product_number, product_url))
+        cursor.execute("INSERT INTO wine(sys_wine_id, name, number, url) VALUES (%s, %s, %s, %s) RETURNING id", (sys_wine_id, wine_name, wine_number, wine_url))
         conn.commit()
         wine_id = cursor.fetchone()[0]
         print 'Inserted a new wine'
@@ -69,13 +69,12 @@ def save_wine_info(product, store_id):
 
     print wine_id
 
-    product_inventory = product_inventory[:-3]
-
-    cursor.execute("INSERT INTO inventory(wine_id, store_id, inventory, period, updated_at) VALUES (%s, %s, %s, %s, %s)", (wine_id, store_id, product_inventory, update_time_period, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    cursor.execute("INSERT INTO inventory(wine_id, wine_name, wine_number, store_id, inventory, day_period, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s)", (wine_id, wine_name, wine_number, store_id, wine_inventory, update_time_period, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     conn.commit()
 
 def get_update_time_period():
 
+	current_day_string = datetime.datetime.now().strftime('%Y-%m-%d')
 	current_hour_string = datetime.datetime.now().strftime('%H')
 
 	if current_hour_string[0] == '0':
@@ -84,13 +83,13 @@ def get_update_time_period():
 	current_hour = int(current_hour_string)
 
 	if current_hour < 10:
-		return 1
+		return current_day_string + '-1'
 	elif current_hour < 14:
-		return 2
+		return current_day_string + '-2'
 	elif current_hour < 22:
-		return 3
+		return current_day_string + '-3'
 
-	return 0
+	return current_day_string
 
 if __name__ == '__main__':
 
