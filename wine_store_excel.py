@@ -19,25 +19,16 @@ def remove_old_file():
 	if os.path.isfile(wine_file_name): 
 		os.remove(wine_file_name)
 
-def get_last_period():
+def get_last_day_period():
+
+	return get_day(1) + '-3'
+
+def get_day(fix_day):
 
 	now_time = datetime.datetime.now()
-	last_time = now_time + datetime.timedelta(hours=-8)
+	last_time = now_time + datetime.timedelta(days=-fix_day)
 
 	day_string = last_time.strftime('%Y-%m-%d')
-	hour_string = last_time.strftime('%H')
-
-	if hour_string[0] == '0':
-		hour_string = hour_string[1]
-
-	hour = int(hour_string)
-
-	if hour < 10:
-		return day_string + '-1'
-	elif hour < 14:
-		return day_string + '-2'
-	elif hour < 22:
-		return day_string + '-3'
 
 	return day_string
 
@@ -47,7 +38,7 @@ if __name__ == '__main__':
 
 	wine_subcategory = u'Rött vin'
 
-	update_time_period = get_last_period()
+	update_time_period = get_last_day_period()
 
 	book = Workbook(encoding = 'utf-8')
 	sheet = book.add_sheet(wine_subcategory)
@@ -68,7 +59,7 @@ if __name__ == '__main__':
 
 			store_info = 'Store Id: ' + store_id + ', Store Name: ' + store_name
 
-			print store_info
+			print store_id
 
 			read_book = xlrd.open_workbook(wine_file_name)
 			read_sheet = read_book.sheet_by_index(0)
@@ -86,7 +77,7 @@ if __name__ == '__main__':
 			sheet.write(read_sheet.nrows+2,9,'Leverantör')
 			book.save(wine_file_name)
 
-			cursor.execute("select wine_id from inventory where store_id = %s and period = %s", (store_id, update_time_period))
+			cursor.execute("select wine_id from inventory where store_id = %s and day_period = %s", (store_id, update_time_period))
 			wine_id_array = cursor.fetchall()
 			for i in range(len(wine_id_array)):
 
@@ -94,8 +85,6 @@ if __name__ == '__main__':
 				cursor.execute("select * from wine where id = %s", wine_id)
 				wine = cursor.fetchone()
 
-				print wine
-				
 				read_book = xlrd.open_workbook(wine_file_name)
 				read_sheet = read_book.sheet_by_index(0)
 				sheet.write(read_sheet.nrows,0,wine[1])
