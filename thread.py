@@ -3,21 +3,24 @@
 
 import thread
 import time
+import datetime
 
-# 为线程定义一个函数
-def print_time( threadName, delay):
-   count = 0
-   while count < 5:
-      time.sleep(delay)
-      count += 1
-      print "%s: %s" % ( threadName, time.ctime(time.time()) )
+def get_update_time_period():
 
-# 创建两个线程
-try:
-   thread.start_new_thread( print_time, ("Thread-1", 2, ) )
-   thread.start_new_thread( print_time, ("Thread-2", 4, ) )
-except:
-   print "Error: unable to start thread"
+	current_day_string = datetime.datetime.now().strftime('%Y-%m-%d')
+	current_hour_string = datetime.datetime.now().strftime('%H')
 
-while 1:
-   pass
+	if current_hour_string[0] == '0':
+		current_hour_string = current_hour_string[1]
+
+	current_hour = int(current_hour_string)
+	print current_hour
+	if  10 <= current_hour < 14:
+		print current_day_string + '-1'
+	if 14 <= current_hour < 22:
+		print current_day_string + '-2'
+	if current_hour >= 22 or current_hour < 10:
+		print current_day_string + '-3'
+
+if __name__ == '__main__':
+	get_update_time_period()
