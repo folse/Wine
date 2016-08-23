@@ -33,7 +33,6 @@ if __name__ == '__main__':
 	# cursor.close()
 	# conn.close()
 
-
 	# ---------- 
 
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
@@ -44,7 +43,3 @@ if __name__ == '__main__':
 	
 	cursor.close()
 	conn.close()
-
-
-
-
