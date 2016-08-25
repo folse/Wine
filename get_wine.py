@@ -82,11 +82,11 @@ def get_update_time_period():
 
 	current_hour = int(current_hour_string)
 
-	if  10 <= current_hour < 14:
+	if current_hour == 10:
 		return current_day_string + '-1'
-	elif 14 <= current_hour < 22:
+	elif current_hour == 14:
 		return current_day_string + '-2'
-	elif current_hour >= 22 or current_hour < 10:
+	elif current_hour == 22:
 		return current_day_string + '-3'
 
 	return current_day_string
@@ -108,7 +108,7 @@ if __name__ == '__main__':
 		exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i+1])
 		result = cursor.fetchone()
 		if result != None:
-			print "//////////  " + result[1] + " " + result[3]
+			print result[1] + " " + result[3]
 			get_store_wine(wine_subcategory, i+1, result[3], 0)
 
 	cursor.close()

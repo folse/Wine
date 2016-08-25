@@ -4,53 +4,75 @@
 
 {% block title %}Management{% endblock %}
 
+{% block head %}
+{{ super() }}
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+{% endblock %}
+
 {% block page_content %}
 
-{% if permission %}
-
-  <div class="header clearfix">
-      <nav>
-        <ul class="nav nav-pills pull-right">
-<!--           <a class="btn btn-lg btn-default" type="button" href="{{ url_for('.new_customer') }}">新客户</a> -->
-        </ul>
-      </nav>
-      <h3 class="text-muted">Stores</h3>
-  </div>
-  {% include 'customers.html' %}
-
-{% else %}
-
-  <div class="header clearfix">
-      <nav>
-        <ul class="nav nav-pills pull-right">
-<!--           <a class="btn btn-lg btn-default" type="button" href="{{ url_for('.new_community_customer') }}">新客户</a> -->
-        </ul>
-      </nav>
-      <h3 class="text-muted">Stores</h3>
-  </div>
-  {% include 'community_customers.html' %}
-
-{% endif %}
-
-
-{% if pagination %}
-<div class="pagination">
-    {{ macros.pagination_widget(pagination, '.index') }}
+<div class="header clearfix">
+    {% if permission %}
+    <nav>
+      <ul class="nav nav-pills pull-right">
+        <a class="btn btn-lg btn-default" type="button" href="../admin">Admin</a>
+      </ul>
+    </nav>
+    {% endif %}
+    <h3 class="text-muted">Export Data</h3>
 </div>
-{% endif %}
+
+<div class="select_date">
+  <input type="text" id="start_date" class="calendar_input" placeholder="Start Date"> &nbsp;to&nbsp; 
+  <div id="start_calendar"></div>
+</div>
+<div class="select_date">
+  <input type="text" id="end_date" class="calendar_input" placeholder="End Date">
+  <div id="end_calendar"></div>
+</div>
+
+<a class="btn" type="button" href="../admin"> Export </a>
+
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script> 
+<script src="{{ url_for('static', filename='js/calendar.js') }}"></script> 
+<script>
+    $('#start_calendar').calendar({
+      width: 320,
+      height: 320,
+      trigger: '#start_date',
+      zIndex: 999,
+      format: 'yyyy-mm-dd',
+        onSelected: function (view, date, data) {
+            console.log('event: onSelected')
+        },
+        onClose: function (view, date, data) {
+            console.log('event: onClose')
+            console.log('view:' + view)
+            console.log('date:' + date)
+            console.log('data:' + (data || 'None'));
+        }
+    });
+    $('#end_calendar').calendar({
+      width: 320,
+      height: 320,
+      trigger: '#end_date',
+      zIndex: 999,
+      format: 'yyyy-mm-dd',
+        onSelected: function (view, date, data) {
+            console.log('event: onSelected')
+        },
+        onClose: function (view, date, data) {
+            console.log('event: onClose')
+            console.log('view:' + view)
+            console.log('date:' + date)
+            console.log('data:' + (data || 'None'));
+        }
+    });
+</script>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-
-{% if permission %}
-<script>
-  $(function () {
-      $("table > tbody > tr").click(function () {
-          location.href = $(this).find("a").attr("href");
-      });
-  })
-</script>
-{% endif %}
 
 {% endblock %}

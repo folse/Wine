@@ -1,3 +1,31 @@
+html {
+    font: 500 14px 'roboto';
+    color: #333;
+    background-color: #fafafa;
+}
+a {
+    text-decoration: none;
+}
+ul, ol, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+p {
+    margin: 0;
+}
+.calendar_input {
+    width: 320px;
+    height: 32px;
+    padding: 0 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 1.2em;
+}
+.select_date {
+    display:inline;
+}
+
 .profile-thumbnail {
     position: absolute;
 }
@@ -118,7 +146,7 @@ html body div.navbar.navbar-inverse div.container div.navbar-header a.navbar-bra
 }
 
 .open{
-    width:70px;
+    width:89px;
 }
 .navbar-nav{
     height:50px;

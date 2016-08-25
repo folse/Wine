@@ -51,7 +51,7 @@ class InventoryAdmin(ModelView):
 class RoleAdmin(ModelView):
     column_searchable_list = ['id', 'name']
 
-# admin.add_view(UserAdmin(User, db.session))
+admin.add_view(UserAdmin(User, db.session))
 admin.add_view(WineAdmin(Wine, db.session))
 admin.add_view(StoreAdmin(Store, db.session))
 admin.add_view(InventoryAdmin(Inventory, db.session))
