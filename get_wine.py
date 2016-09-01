@@ -67,9 +67,9 @@ def save_wine_info(product, store_id):
     else:
         wine_id = result[0]
 
-    print wine_id
+    inventory_table_name = 'inventory' + str(store_id)
 
-    cursor.execute("INSERT INTO inventory(wine_id, wine_name, wine_number, store_id, inventory, day_period, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s)", (wine_id, wine_name, wine_number, store_id, wine_inventory, update_time_period, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    cursor.execute("INSERT INTO " + inventory_table_name + "(wine_id, wine_name, wine_number, inventory, day_period, created_at) VALUES (%s, %s, %s, %s, %s, %s)", (wine_id, wine_name, wine_number, wine_inventory, update_time_period, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     conn.commit()
 
 def get_update_time_period():

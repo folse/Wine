@@ -13,14 +13,6 @@ class LoginForm(Form):
     remember_me = BooleanField('Remember me')
     submit = SubmitField('Login')
 
-
-class SpecialistLoginForm(Form):
-    mobile = TelField('手机号', validators=[Required(), Length(11,11,'请输入11位的手机号')])
-    password = PasswordField('密码', validators=[Required()])
-    remember_me = BooleanField('记住我')
-    submit = SubmitField('完成')
-
-
 class RegistrationForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64),
                                            Email()])
@@ -43,18 +35,6 @@ class RegistrationForm(Form):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
-
-class SpecialistRegistrationForm(Form):
-    realname = StringField('姓名', validators=[Required(), Length(2, 64)])
-    mobile = TelField('手机号', validators=[Required(), Length(11,11,'请输入11位的手机号')])
-    password = PasswordField('登录密码', validators=[
-        Required(), EqualTo('password2', message='两个密码不一致')])
-    password2 = PasswordField('确认密码', validators=[Required()])
-    submit = SubmitField('完成')
-
-    def validate_mobile(self, field):
-        if User.query.filter_by(mobile=field.data).first():
-            raise ValidationError('手机号已被注册')
 
 
 class ChangePasswordForm(Form):

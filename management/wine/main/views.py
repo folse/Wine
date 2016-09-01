@@ -27,3 +27,21 @@ def index():
             permission=True
             pass
     return render_template('main.html', permission=permission)
+
+@main.route('/export_excel', methods=['POST'])
+@login_required
+def export_excel():
+    permission=False
+    for role in current_user.roles:
+        if role.name == 'admin':
+            permission=True
+            pass
+    if request.method == 'POST':
+        category = request.args.get('category', '')
+        start_date = request.args.get('start_date', '')
+        end_date = request.args.get('end_date', '')
+        print category
+        print start_date
+        print end_date
+    return render_template('main.html', permission=permission)
+

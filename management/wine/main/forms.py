@@ -13,4 +13,3 @@ sys.setdefaultencoding('utf-8')
 
 class CustomerForm(Form):
     name = StringField('姓名', validators=[Length(0, 64)])
-
