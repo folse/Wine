@@ -53,20 +53,18 @@ def write_period_inventory(wine_array, store_id, day_period, col):
 
 		wine_id = inventory[1]
 		wine_inventory = inventory[2]
-
 		inventory_dict[wine_id] = wine_inventory
 
 	for wine in wine_array:
 
 		wine_id = wine[0]
+
 		if inventory_dict.has_key(wine_id):
 			sheet.write(inventory_row,col,inventory_dict[wine_id])
 		else:
 			sheet.write(inventory_row,col,0)
 
 		inventory_row +=1
-
-	inventory_row = len(wine_array) + 6
 
 def write_store_period_wines(store_id):
 
@@ -76,7 +74,6 @@ def write_store_period_wines(store_id):
 	sql_end_time = datetime.datetime.strptime(end_date,'%Y-%m-%d') + datetime.timedelta(days=1)
 	sql_start_date = sql_start_time.strftime('%Y-%m-%d')
 	sql_end_date = sql_end_time.strftime('%Y-%m-%d')
-
 
 	inventory_table_name = 'inventory' + str(store_id)
 	cursor.execute("select DISTINCT wine_id, wine_name, wine_number from " + inventory_table_name + " where day_period between %s and %s ORDER BY wine_id", (sql_start_date, sql_end_date))
@@ -98,6 +95,7 @@ def write_store(store):
 
 	global row
 	global days_count
+	global inventory_row
 
 	store_id = str(store[0])
 	store_name = str(store[1])
@@ -125,6 +123,9 @@ def write_store(store):
 			day_period = get_day(end_day,i) + '-' + period_array[j]
 			column = i*3+(3-j)+1
 			write_period_inventory(wine_array, store_id, day_period, column)
+			inventory_row -= len(wine_array)
+
+	inventory_row = len(wine_array) + 6
 
 
 if __name__ == '__main__':

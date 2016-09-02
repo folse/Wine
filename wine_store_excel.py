@@ -69,7 +69,8 @@ if __name__ == '__main__':
 			sheet.write(row+1,8,'Producent')
 			sheet.write(row+1,9,'Leverantör')
 
-			cursor.execute("select wine_id from inventory where store_id = %s and day_period = %s", (store_id, update_time_period))
+			inventory_table_name = 'inventory' + str(store_id)
+			cursor.execute("select wine_id from " + inventory_table_name + " where day_period = %s", (store_id, update_time_period))
 			wine_id_array = cursor.fetchall()
 			for wine_id in wine_id_array:
 
