@@ -59,8 +59,11 @@ def write_period_inventory(wine_array, store_id, day_period, col):
 
 		wine_id = wine[0]
 
+		print wine
+
 		if inventory_dict.has_key(wine_id):
-			sheet.write(inventory_row,col,inventory_dict[wine_id])
+			# sheet.write(inventory_row,col,inventory_dict[wine_id])
+			sheet.write(inventory_row,col,wine[2])
 		else:
 			sheet.write(inventory_row,col,0)
 
