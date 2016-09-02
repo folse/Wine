@@ -17,23 +17,17 @@ def remove_old_file():
 	if os.path.isfile(wine_file_name): 
 		os.remove(wine_file_name)
 
-def get_last_day_period():
-
-	return get_day(1) + '-3'
-
-def get_day(fix_day):
-	now_time = datetime.datetime.now()
-	last_time = now_time + datetime.timedelta(days=-fix_day)
-
-	day_string = last_time.strftime('%Y-%m-%d')
-
-	return day_string
-
 if __name__ == '__main__':
 
 	remove_old_file()
 
-	update_time_period = get_last_day_period()
+	start_date = '2016-08-28'
+	end_date = '2016-09-01'
+
+	sql_start_time = datetime.datetime.strptime(start_date,'%Y-%m-%d') + datetime.timedelta(days=-1)
+	sql_end_time = datetime.datetime.strptime(end_date,'%Y-%m-%d') + datetime.timedelta(days=1)
+	sql_start_date = sql_start_time.strftime('%Y-%m-%d')
+	sql_end_date = sql_end_time.strftime('%Y-%m-%d')
 
 	book = xlsxwriter.Workbook(wine_file_name)
 	sheet = book.add_worksheet()
@@ -70,7 +64,7 @@ if __name__ == '__main__':
 			sheet.write(row+1,9,'Leverantör')
 
 			inventory_table_name = 'inventory' + str(store_id)
-			cursor.execute("select wine_id from " + inventory_table_name + " where day_period = %s", (store_id, update_time_period))
+			cursor.execute("select DISTINCT wine_id from " + inventory_table_name + " where day_period between %s and %s", (sql_start_date, sql_end_date))
 			wine_id_array = cursor.fetchall()
 			for wine_id in wine_id_array:
 

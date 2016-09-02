@@ -76,7 +76,7 @@ def write_store_period_wines(store_id):
 	sql_end_date = sql_end_time.strftime('%Y-%m-%d')
 
 	inventory_table_name = 'inventory' + str(store_id)
-	cursor.execute("select DISTINCT wine_id, wine_name, wine_number from " + inventory_table_name + " where day_period between %s and %s ORDER BY wine_id", (sql_start_date, sql_end_date))
+	cursor.execute("select DISTINCT wine_id, wine_name, wine_number from " + inventory_table_name + " where day_period between %s and %s", (sql_start_date, sql_end_date))
 	wine_array = cursor.fetchall()
 	for wine in wine_array:
 
@@ -159,12 +159,6 @@ if __name__ == '__main__':
 
 	# store = store_array[0]
 	# write_store(store)
-
-	# store = store_array[1]
-	# write_store(store)
-
-	# store = store_array[2]
-	write_store(store)
 
 	book.close()
 	cursor.close()
