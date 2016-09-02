@@ -39,7 +39,7 @@ def write_days_title(row, days_count):
 
 def write_period_inventory(wine_array, store_id, day_period, col):
 
-	row = 2
+	global inventory_row
 
 	inventory_dict = {}
 
@@ -52,7 +52,7 @@ def write_period_inventory(wine_array, store_id, day_period, col):
 	for inventory in inventory_array:
 
 		wine_id = inventory[1]
-		wine_inventory = inventory[3]
+		wine_inventory = inventory[2]
 
 		inventory_dict[wine_id] = wine_inventory
 
@@ -60,21 +60,27 @@ def write_period_inventory(wine_array, store_id, day_period, col):
 
 		wine_id = wine[0]
 		if inventory_dict.has_key(wine_id):
-			sheet.write(row,col,inventory_dict[wine_id])
+			sheet.write(inventory_row,col,inventory_dict[wine_id])
 		else:
-			sheet.write(row,col,0)
+			sheet.write(inventory_row,col,0)
 
-		row +=1
+		inventory_row +=1
+
+	inventory_row = len(wine_array) + 6
 
 def write_store_period_wines(store_id):
 
 	global row
-	row = row+1
+
+	sql_start_time = datetime.datetime.strptime(start_date,'%Y-%m-%d') + datetime.timedelta(days=-1)
+	sql_end_time = datetime.datetime.strptime(end_date,'%Y-%m-%d') + datetime.timedelta(days=1)
+	sql_start_date = sql_start_time.strftime('%Y-%m-%d')
+	sql_end_date = sql_end_time.strftime('%Y-%m-%d')
+
 
 	inventory_table_name = 'inventory' + str(store_id)
-	cursor.execute("select DISTINCT wine_id, wine_name, wine_number from " + inventory_table_name + " where day_period between %s and %s ORDER BY wine_id", (start_date, end_date))
+	cursor.execute("select DISTINCT wine_id, wine_name, wine_number from " + inventory_table_name + " where day_period between %s and %s ORDER BY wine_id", (sql_start_date, sql_end_date))
 	wine_array = cursor.fetchall()
-
 	for wine in wine_array:
 
 		wine_id = str(wine[0])
@@ -107,6 +113,8 @@ def write_store(store):
 	sheet.write(row+1,col+1,'Product Id')
 	write_days_title(row+1,days_count)
 
+	row = row+1
+
 	wine_array = write_store_period_wines(store_id)
 
 	period_array = ['1', '2', '3']
@@ -129,8 +137,10 @@ if __name__ == '__main__':
 	row = -3
 	col = 0
 
-	start_date = '2016-08-17'
-	end_date = '2016-08-22'
+	inventory_row = 2
+
+	start_date = '2016-08-28'
+	end_date = '2016-09-01'
 
 	start_day = datetime.datetime.strptime(start_date,'%Y-%m-%d')
 	end_day = datetime.datetime.strptime(end_date,'%Y-%m-%d')
@@ -149,6 +159,9 @@ if __name__ == '__main__':
 	write_store(store)
 
 	store = store_array[1]
+	write_store(store)
+
+	store = store_array[2]
 	write_store(store)
 
 	book.close()

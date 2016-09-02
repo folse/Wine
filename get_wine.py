@@ -68,7 +68,7 @@ def save_wine_info(product, store_id):
         wine_id = result[0]
 
     inventory_table_name = 'inventory' + str(store_id)
-
+    cursor.execute("INSERT INTO inventory (wine_id, wine_name, wine_number, store_id, inventory, day_period, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s)", (wine_id, wine_name, wine_number, store_id, wine_inventory, update_time_period, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     cursor.execute("INSERT INTO " + inventory_table_name + "(wine_id, wine_name, wine_number, inventory, day_period, created_at) VALUES (%s, %s, %s, %s, %s, %s)", (wine_id, wine_name, wine_number, wine_inventory, update_time_period, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     conn.commit()
 
@@ -82,11 +82,11 @@ def get_update_time_period():
 
 	current_hour = int(current_hour_string)
 
-	if current_hour == 10:
+	if current_hour == 10 or current_hour == 11:
 		return current_day_string + '-1'
-	elif current_hour == 14:
+	elif current_hour == 14 or current_hour == 15:
 		return current_day_string + '-2'
-	elif current_hour == 22:
+	elif current_hour == 22 or current_hour == 23:
 		return current_day_string + '-3'
 
 	return current_day_string

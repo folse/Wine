@@ -113,10 +113,9 @@ if __name__ == '__main__':
 	cursor = conn.cursor()
 	cursor.execute("SELECT COUNT(*) FROM wine")
 	rows_count = cursor.fetchone()[0]
-
-	for i in range(rows_count):
-		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + str(i+1)
-		update_wine_info(i+1)
+	for i in xrange(1,rows_count):
+		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + str(i)
+		update_wine_info(i)
 
 	cursor.close()
 	conn.close()
