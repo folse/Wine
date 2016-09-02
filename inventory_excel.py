@@ -59,11 +59,8 @@ def write_period_inventory(wine_array, store_id, day_period, col):
 
 		wine_id = wine[0]
 
-		print wine
-
 		if inventory_dict.has_key(wine_id):
-			# sheet.write(inventory_row,col,inventory_dict[wine_id])
-			sheet.write(inventory_row,col,wine[2])
+			sheet.write(inventory_row,col,inventory_dict[wine_id])
 		else:
 			sheet.write(inventory_row,col,0)
 
@@ -103,7 +100,7 @@ def write_store(store):
 	store_id = str(store[0])
 	store_name = str(store[1])
 
-	# print store_id
+	print store_id
 
 	row +=3
 
@@ -128,7 +125,7 @@ def write_store(store):
 			write_period_inventory(wine_array, store_id, day_period, column)
 			inventory_row -= len(wine_array)
 
-	inventory_row = len(wine_array) + 6
+	inventory_row = inventory_row + len(wine_array) + 4
 
 
 if __name__ == '__main__':
@@ -155,17 +152,18 @@ if __name__ == '__main__':
 	cursor.execute("select * from store")
 	store_array = cursor.fetchall()
 
-	# for store in store_array:
+	for store in store_array:
+		write_store(store)
 
 	#先写查单个的Store的，后面在通过多线程一起去查多个Store
 
-	store = store_array[0]
-	write_store(store)
+	# store = store_array[0]
+	# write_store(store)
 
-	store = store_array[1]
-	write_store(store)
+	# store = store_array[1]
+	# write_store(store)
 
-	store = store_array[2]
+	# store = store_array[2]
 	write_store(store)
 
 	book.close()
