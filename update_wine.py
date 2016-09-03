@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
-	cursor.execute("SELECT wine_number FROM wine where alcohol is not null")
+	cursor.execute("SELECT number FROM wine where alcohol is not null")
 	wine_numbers = cursor.fetchall()
 	for wine_number in wine_numbers:
 		get_wine_info(wine_number)
