@@ -111,7 +111,7 @@ if __name__ == '__main__':
 
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
-	cursor.execute("SELECT COUNT(*) FROM wine")
+	cursor.execute("SELECT COUNT(*) FROM wine where alcohol is not null")
 	rows_count = cursor.fetchone()[0]
 	for i in xrange(1,rows_count):
 		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + str(i)
