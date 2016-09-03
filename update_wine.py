@@ -9,14 +9,7 @@ import datetime
 import sys 
 reload(sys)
 sys.setdefaultencoding('utf8')   
-
-def update_wine_info(index_id):
-	cursor.execute("SELECT * FROM wine WHERE id = %s", (index_id,))
-	row = cursor.fetchone()
-	if row != None:	
-		wine_number = row[11]
-		get_wine_info(wine_number)
-
+		
 def get_wine_info(wine_number):
 	url = 'https://api.systembolaget.se/V4/artikel/' + wine_number
 	username = 'DMZ1\SybApi'
@@ -111,11 +104,10 @@ if __name__ == '__main__':
 
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
-	cursor.execute("SELECT COUNT(*) FROM wine where alcohol is not null")
-	rows_count = cursor.fetchone()[0]
-	for i in xrange(1,rows_count):
-		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + str(i)
-		update_wine_info(i)
+	cursor.execute("SELECT wine_number FROM wine where alcohol is not null")
+	wine_numbers = cursor.fetchall()
+	for wine_number in wine_numbers:
+		get_wine_info(wine_number)
 
 	cursor.close()
 	conn.close()
