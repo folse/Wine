@@ -7,6 +7,7 @@ from .. import db
 from ..models import User, Wine
 from inventory_excel import WineExcel
 import time
+import simplejson
 
 def register_request(app):
     @app.before_request
@@ -27,20 +28,18 @@ def index():
 @main.route('/export_excel', methods=['POST'])
 @login_required
 def export_excel():
-    permission=False
-    for role in current_user.roles:
-        if role.name == 'admin':
-            permission=True
     if request.method == 'POST':
         category = request.args.get('category', '')
         start_date = request.args.get('start_date', '')
         end_date = request.args.get('end_date', '')
-        print category
+
         wineExcel = WineExcel(start_date, end_date)
         if wineExcel.export_inventory() == True:
-            return 'Finished!'
+            data = { "msg":"Finished!", "code":"0000" }
         else :
-            return 'Ops...'
+            data = { "msg":"Opps...", "code":"0001" }
+        
+        return simplejson.dumps(data)
 
 @main.route('/download_excel')
 @login_required
@@ -50,8 +49,6 @@ def download_excel():
         file_name = 'inventory_%s.xlsx' % time.strftime('%Y-%m-%d',time.localtime(time.time()))
     elif type == 'wine':
         file_name = 'wine_%s.xlsx' % time.strftime('%Y-%m-%d',time.localtime(time.time()))
-
-    file_path = '../' + file_name
-    response = make_response(send_file(file_path))
+    response = make_response(send_file(file_name))
     response.headers["Content-Disposition"] = "attachment; filename=%s;" % file_name
     return response
