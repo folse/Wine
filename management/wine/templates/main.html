@@ -96,6 +96,7 @@
           $.ajax({
             type: "post",
             dataType: "json",
+            timeout: 60*10,
             url: "export_excel?start_date="+start_date+"&end_date="+end_date,
             complete: function (msg) {
               var type = 'inventory'
