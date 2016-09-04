@@ -96,12 +96,17 @@
           $.ajax({
             type: "post",
             dataType: "json",
-            timeout: 60*10,
+            timeout: 1000*60*10,
             url: "export_excel?start_date="+start_date+"&end_date="+end_date,
-            complete: function (msg) {
+            success: function (msg) {
               var type = 'inventory'
               window.location.href="/download_excel?type="+type;
               document.getElementById("export_btn").innerHTML = "Finish"
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              alert(XMLHttpRequest.status);
+              alert(XMLHttpRequest.readyState);
+              alert(textStatus);
             }
           });
         }else{

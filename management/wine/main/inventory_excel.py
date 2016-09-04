@@ -92,8 +92,6 @@ def write_store(self, store):
 	store_id = str(store[0])
 	store_name = str(store[1])
 
-	print store_id
-
 	self.row +=3
 
 	store_info = 'Store Id: ' + store_id + ', Store Name: ' + store_name
@@ -118,6 +116,8 @@ def write_store(self, store):
 			self.inventory_row -= len(wine_array)
 
 	self.inventory_row = self.inventory_row + len(wine_array) + 4
+
+	print store_id
 
 class WineExcel:
 
@@ -149,7 +149,7 @@ class WineExcel:
 		#先写查单个的Store的，后面在通过多线程一起去查多个Store
 
 		# store = store_array[0]
-		# write_store(store)
+		# write_store(self, store)
 
 		self.book.close()
 		self.cursor.close()
