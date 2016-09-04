@@ -102,14 +102,10 @@ if __name__ == '__main__':
 	conn = psycopg2.connect(database="wine", user="postgres", password="makeFuture", host="localhost", port="5432")
 	cursor = conn.cursor()
 
-	cursor.execute("SELECT COUNT(*) FROM store")
-	result = cursor.fetchone()
-	for i in range(result[0]):
-		exist = cursor.execute("SELECT * FROM store WHERE id = %s", [i+1])
-		result = cursor.fetchone()
-		if result != None:
-			print result[1] + " " + result[3]
-			get_store_wine(wine_subcategory, i+1, result[3], 0)
+	cursor.execute("SELECT sys_store_id FROM store")
+	store_array = cursor.fetchall()
+	for sys_store_id in sys_store_id_array:
+		get_store_wine(wine_subcategory, i+1, sys_store_id, 0)
 
 	cursor.close()
 	conn.close()
