@@ -12,9 +12,15 @@ sys.setdefaultencoding('utf8')
 
 inventory_file_name = 'inventory.xlsx'
 
-def remove_old_file():
-	if os.path.isfile(inventory_file_name): 
-		os.remove(inventory_file_name)
+def remove_old_file(file_name):
+	if os.path.isfile(file_name): 
+		os.remove(file_name)
+
+def write_log(self, index):
+	print index+1
+	self.log_file = file("inventory.log","w+")
+	completion_rate = str((index+1)*100/436) + "%"
+	self.log_file.writelines(completion_rate)
 
 def get_day(start_time, fix_day):
 
@@ -117,13 +123,11 @@ def write_store(self, store):
 
 	self.inventory_row = self.inventory_row + len(wine_array) + 4
 
-	print store_id
-
 class WineExcel:
 
 	def __init__(self, start_date, end_date):
 
-		remove_old_file()
+		remove_old_file(inventory_file_name)
 
 		self.book = xlsxwriter.Workbook(inventory_file_name)
 		self.sheet = self.book.add_worksheet()
@@ -143,8 +147,10 @@ class WineExcel:
 		self.cursor.execute("select * from store")
 		store_array = self.cursor.fetchall()
 
-		for store in store_array:
+		for i in xrange(0,len(store_array)):
+			store = store_array[i]
 			write_store(self, store)
+			write_log(self,i)
 
 		#先写查单个的Store的，后面在通过多线程一起去查多个Store
 
@@ -153,9 +159,8 @@ class WineExcel:
 
 		self.book.close()
 		self.cursor.close()
+		self.log_file.close()
 		conn.close()
-
-		return True
 
 if __name__ == '__main__':
 

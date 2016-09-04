@@ -34,12 +34,24 @@ def export_excel():
         end_date = request.args.get('end_date', '')
 
         wineExcel = WineExcel(start_date, end_date)
-        if wineExcel.export_inventory() == True:
-            data = { "msg":"Finished!", "code":"0000" }
-        else :
-            data = { "msg":"Opps...", "code":"0001" }
+        wineExcel.export_inventory()
+        data = { "msg":"Finished!", "code":"0000" }
         
         return simplejson.dumps(data)
+
+@main.route('/get_excel_progress', methods=['GET'])
+@login_required
+def get_excel_progress():
+    type = request.args.get('type', '')
+    if type == 'inventory':
+        file_name = 'inventory.log'
+    elif type == 'wine':
+        file_name = 'wine.log'
+    log_file = open("inventory.log")
+    log_msg = log_file.readline() 
+    data = { "msg":log_msg, "code":"0000" }
+    
+    return simplejson.dumps(data)
 
 @main.route('/download_excel')
 @login_required
