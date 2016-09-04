@@ -10,7 +10,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-inventory_file_name = '/wine/inventory_%s.xlsx' % time.strftime('%Y-%m-%d',time.localtime(time.time()))
+inventory_file_name = 'inventory.xlsx'
 
 def remove_old_file():
 	if os.path.isfile(inventory_file_name): 

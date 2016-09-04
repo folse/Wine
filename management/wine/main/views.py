@@ -46,9 +46,10 @@ def export_excel():
 def download_excel():
     type = request.args.get('type', '')
     if type == 'inventory':
-        file_name = 'inventory_%s.xlsx' % time.strftime('%Y-%m-%d',time.localtime(time.time()))
+        file_name = 'inventory.xlsx'
     elif type == 'wine':
-        file_name = 'wine_%s.xlsx' % time.strftime('%Y-%m-%d',time.localtime(time.time()))
-    response = make_response(send_file(file_name))
+        file_name = 'wine.xlsx'
+    file_path = '../' + file_name
+    response = make_response(send_file(file_path))
     response.headers["Content-Disposition"] = "attachment; filename=%s;" % file_name
     return response
