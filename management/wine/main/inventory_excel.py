@@ -45,8 +45,6 @@ def write_days_title(self, row, days_count):
 
 def write_period_inventory(self, wine_array, store_id, day_period, col):
 
-	print day_period
-
 	inventory_dict = {}
 
 	inventory_table_name = 'inventory' + str(store_id)
