@@ -10,6 +10,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 inventory_file_name = 'inventory.xlsx'
+log_file_name = 'inventory.log'
 
 def remove_file(file_name):
 	if os.path.isfile(file_name): 
@@ -17,7 +18,7 @@ def remove_file(file_name):
 
 def write_log(self, index):
 	print index+1
-	self.log_file = file("inventory.log","w+")
+	self.log_file = file(log_file_name,"w+")
 	completion_rate = str((index+1)*100/436) + "%"
 	self.log_file.writelines(completion_rate)
 
@@ -127,6 +128,7 @@ class WineExcel:
 	def __init__(self, start_date, end_date):
 
 		remove_file(inventory_file_name)
+		remove_file(log_file_name)
 
 		self.book = xlsxwriter.Workbook(inventory_file_name)
 		self.sheet = self.book.add_worksheet()
