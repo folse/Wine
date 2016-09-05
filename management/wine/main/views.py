@@ -9,7 +9,7 @@ from inventory_excel import WineExcel
 
 import threading
 
-import os, time
+import os, time, datetime
 import simplejson
 
 def register_request(app):
@@ -40,14 +40,21 @@ def export_excel():
         start_date = request.args.get('start_date', '')
         end_date = request.args.get('end_date', '')
 
-        threads = []
-        thread = threading.Thread(target=export_inventory_excel,args=(start_date,end_date))
-        threads.append(thread)
-        for t in threads:
-            t.setDaemon(True)
-            t.start()
+        start_day = datetime.datetime.strptime(start_date,'%Y-%m-%d')
+        end_day = datetime.datetime.strptime(end_date,'%Y-%m-%d')
+        days_count = (end_day-start_day).days
 
-        data = { "msg":"Executed", "code":"0000" }
+        if days_count > 15:
+            data = { "msg":"Please don't select more than 15 days", "code":"0001" }
+        else:
+            threads = []
+            thread = threading.Thread(target=export_inventory_excel,args=(start_date,end_date))
+            threads.append(thread)
+            for t in threads:
+                t.setDaemon(True)
+                t.start()
+
+            data = { "msg":"Executed", "code":"0000" }
         
         return simplejson.dumps(data)
 

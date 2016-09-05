@@ -115,15 +115,27 @@
     $(function () {
       $("#export_btn").click(function () {
         if (start_date != "" && end_date != "") {
-          document.getElementById("export_btn").innerHTML = "Generating..."
-          timer = window.setInterval(function(){ 
-            get_excel_progress("inventory");
-          }, 1000);
+          
           $.ajax({
             type: "post",
             dataType: "json",
             url: "export_excel?start_date="+start_date+"&end_date="+end_date,
-            success: function (resp) {},
+            complete: function (resp) {
+
+              var data = $.parseJSON(resp.responseText);
+              console.log(data.code);
+              console.log(data.msg);
+
+              if (data.code == '0000') {
+                document.getElementById("export_btn").innerHTML = "Generating..."
+                timer = window.setInterval(function(){ 
+                  get_excel_progress("inventory");
+                }, 1000);
+              }else{
+                alert(data.msg);
+              }
+              
+            },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.log(XMLHttpRequest.status);
               console.log(XMLHttpRequest.readyState);
