@@ -82,6 +82,8 @@
     // 定时刷新最新的生成 excel 的进度
     var timer = new Object();
 
+    var alreadyDownload = false
+
     function get_excel_progress(type) {
       $.ajax({
           type: "get",
@@ -91,7 +93,11 @@
             var data = $.parseJSON(resp.responseText);
             console.log(data.msg);
             document.getElementById("export_btn").innerHTML = data.msg
-            if (data.msg == "100%") {
+            if (data.msg == "99%") {
+              document.getElementById("export_btn").innerHTML = "Generating..."
+            }
+            if (data.msg == "100%" && !alreadyDownload) {
+              alreadyDownload = true
               clearInterval(timer);
               document.getElementById("export_btn").innerHTML = "Finished"
               window.location.href="/download_excel?type="+type;
@@ -110,7 +116,7 @@
           document.getElementById("export_btn").innerHTML = "Generating..."
           timer = window.setInterval(function(){ 
             get_excel_progress("inventory");
-          }, 1000);
+          }, 500);
           $.ajax({
             type: "post",
             dataType: "json",
