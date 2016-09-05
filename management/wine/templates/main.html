@@ -92,21 +92,23 @@
           complete: function (resp) {
             var data = $.parseJSON(resp.responseText);
             console.log(data.msg);
-            document.getElementById("export_btn").innerHTML = data.msg
-            if (data.msg == "99%") {
-              document.getElementById("export_btn").innerHTML = "Generating..."
-            }
-            if (data.msg == "100%" && !alreadyDownload) {
-              alreadyDownload = true
-              clearInterval(timer);
-              document.getElementById("export_btn").innerHTML = "Finished"
-              window.location.href="/download_excel?type="+type;
+            if (data.msg != "") {
+              document.getElementById("export_btn").innerHTML = data.msg
+              if (data.msg == "99%") {
+                document.getElementById("export_btn").innerHTML = "Generating..."
+              }
+              if (data.msg == "100%" && !alreadyDownload) {
+                alreadyDownload = true
+                clearInterval(timer);
+                document.getElementById("export_btn").innerHTML = "Finished"
+                window.location.href="/download_excel?type="+type;
+              }
             }
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.log(XMLHttpRequest.status);
               console.log(XMLHttpRequest.readyState);
-              alert(textStatus);
+              console.log(textStatus);
             }
       });
     }
@@ -116,7 +118,7 @@
           document.getElementById("export_btn").innerHTML = "Generating..."
           timer = window.setInterval(function(){ 
             get_excel_progress("inventory");
-          }, 500);
+          }, 1000);
           $.ajax({
             type: "post",
             dataType: "json",
@@ -125,7 +127,7 @@
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.log(XMLHttpRequest.status);
               console.log(XMLHttpRequest.readyState);
-              alert(textStatus);
+              console.log(textStatus);
             }
           });
         }else{
