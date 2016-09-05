@@ -92,8 +92,9 @@ def get_update_time_period():
 	return current_day_string
 
 if __name__ == '__main__':
-
+	#  785 1288
 	wine_subcategory = u'Rött vin'
+	# wine_subcategory = u'Vitt vin'
 
 	global update_time_period
 	update_time_period = get_update_time_period()
@@ -103,9 +104,9 @@ if __name__ == '__main__':
 	cursor = conn.cursor()
 
 	cursor.execute("SELECT sys_store_id FROM store")
-	store_array = cursor.fetchall()
-	for sys_store_id in sys_store_id_array:
-		get_store_wine(wine_subcategory, i+1, sys_store_id, 0)
+	sys_store_id_array = cursor.fetchall()
+	for i in range(len(sys_store_id_array)):
+		get_store_wine(wine_subcategory, i+1, sys_store_id_array[i][0], 0)
 
 	cursor.close()
 	conn.close()
