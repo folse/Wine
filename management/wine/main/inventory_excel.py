@@ -1,7 +1,6 @@
 #!/usr/bin/python 
 # -*- coding: UTF-8 -*-
 import os
-import time
 import datetime
 import xlsxwriter
 import psycopg2
@@ -12,7 +11,7 @@ sys.setdefaultencoding('utf8')
 
 inventory_file_name = 'inventory.xlsx'
 
-def remove_old_file(file_name):
+def remove_file(file_name):
 	if os.path.isfile(file_name): 
 		os.remove(file_name)
 
@@ -127,7 +126,7 @@ class WineExcel:
 
 	def __init__(self, start_date, end_date):
 
-		remove_old_file(inventory_file_name)
+		remove_file(inventory_file_name)
 
 		self.book = xlsxwriter.Workbook(inventory_file_name)
 		self.sheet = self.book.add_worksheet()

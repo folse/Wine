@@ -6,7 +6,10 @@ from . import main
 from .. import db
 from ..models import User, Wine
 from inventory_excel import WineExcel
-import time
+
+import threading
+
+import os, time
 import simplejson
 
 def register_request(app):
@@ -19,6 +22,10 @@ def register_request(app):
     def db_commit(resp):
         db.session.commit()
         return resp
+
+def export_inventory_excel(start_date, end_date):
+    wineExcel = WineExcel(start_date, end_date)
+    wineExcel.export_inventory()
 
 @main.route('/', methods=['GET', 'POST'])
 @login_required
@@ -33,9 +40,14 @@ def export_excel():
         start_date = request.args.get('start_date', '')
         end_date = request.args.get('end_date', '')
 
-        wineExcel = WineExcel(start_date, end_date)
-        wineExcel.export_inventory()
-        data = { "msg":"Finished!", "code":"0000" }
+        threads = []
+        thread = threading.Thread(target=export_inventory_excel,args=(start_date,end_date))
+        threads.append(thread)
+        for t in threads:
+            t.setDaemon(True)
+            t.start()
+
+        data = { "msg":"Executed", "code":"0000" }
         
         return simplejson.dumps(data)
 
@@ -43,13 +55,18 @@ def export_excel():
 @login_required
 def get_excel_progress():
     type = request.args.get('type', '')
+
     if type == 'inventory':
         file_name = 'inventory.log'
     elif type == 'wine':
         file_name = 'wine.log'
-    log_file = open("inventory.log")
-    log_msg = log_file.readline() 
-    data = { "msg":log_msg, "code":"0000" }
+
+    if os.path.exists(file_name):
+        log_file = open(file_name)
+        log_msg = log_file.readline()
+        data = { "msg":log_msg, "code":"0000" }
+    else:
+        data = { "msg":'Generating...', "code":"0000" }
     
     return simplejson.dumps(data)
 

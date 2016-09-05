@@ -78,25 +78,39 @@
             end_date = formatDate(date, "yyyy-MM-dd")
         }
     });
+
+    // 定时刷新最新的生成 excel 的进度
+    var timer = new Object();
+
     function get_excel_progress(type) {
       $.ajax({
           type: "get",
           dataType: "json",
           url: "get_excel_progress?type="+type,
-          success: function (resp) {
-            document.getElementById("export_btn").innerHTML = resp.msg
-            if (resp.msg == "100%") {
+          complete: function (resp) {
+            var data = $.parseJSON(resp.responseText);
+            console.log(data.msg);
+            document.getElementById("export_btn").innerHTML = data.msg
+            if (data.msg == "100%") {
+              clearInterval(timer);
               document.getElementById("export_btn").innerHTML = "Finished"
               window.location.href="/download_excel?type="+type;
             }
-          }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.log(XMLHttpRequest.status);
+              console.log(XMLHttpRequest.readyState);
+              alert(textStatus);
+            }
       });
     }
     $(function () {
       $("#export_btn").click(function () {
         if (start_date != "" && end_date != "") {
           document.getElementById("export_btn").innerHTML = "Generating..."
-          get_excel_progress("inventory");
+          timer = window.setInterval(function(){ 
+            get_excel_progress("inventory");
+          }, 1000);
           $.ajax({
             type: "post",
             dataType: "json",
