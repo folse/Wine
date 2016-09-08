@@ -32,6 +32,12 @@ def export_inventory_excel(start_date, end_date):
 def index():
     return render_template('main.html')
 
+@main.route('/test', methods=['POST'])
+def test():
+    if request.method == 'POST':
+        abc = request.values.get('abc', '')
+        return abc
+
 @main.route('/export_excel', methods=['POST'])
 @login_required
 def export_excel():

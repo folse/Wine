@@ -20,6 +20,13 @@ p {
     outline: none;
     font-size: 1.2em;
 }
+
+.form-control{
+    width: 320px;
+    font-size: 1.2em;
+    margin:20px 0 20px 0;
+}
+
 .select_date {
     display:inline;
 }
@@ -74,9 +81,9 @@ div.flask-pagedown-preview h3 {
 
 .btn-default {
     width: 130px;
-    float: right;
     margin-top: 10px;
     margin-bottom: 30px;
+    font-size: 1.2em;
     background-color: #fff;
     border-color: #fe3e79;
     color: #333;

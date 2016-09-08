@@ -13,30 +13,28 @@
 {% block page_content %}
 
 <div class="header clearfix">
-    <nav>
-      <ul class="nav nav-pills pull-right">
-        <a id="export_btn" class="btn btn-lg btn-default" type="button">Export</a>
-      </ul>
-    </nav>
     <h3 class="text-muted">Export Data</h3>
 </div>
 
-<!-- <div class="select">
-  <select name="select" id="category_select" class="category_select">
-    <option value="选择品牌">Rot wine</option>
-    <option value="选择品牌1">选择品牌1</option>
-    <option value="选择品牌2">选择品牌2</option>
+<div class="select">
+  <select name="select" id="category_select" class="form-control">
+    <option value="1">Rött vin</option>
+    <option value="2">Vitt vin</option>
   </select>
-</div> -->
+</div>
 
 <div class="select_date">
-  <input type="text" id="start_date" class="calendar_input" placeholder="Start Date"> &nbsp;to&nbsp; 
+  <div class="form-group">
+    <input type="text" class="form-control" id="start_date" placeholder="Start Date">
+  </div>
   <div id="start_calendar"></div>
 </div>
 <div class="select_date">
-  <input type="text" id="end_date" class="calendar_input" placeholder="End Date">
+    <input type="text" class="form-control" id="end_date" placeholder="End Date">
   <div id="end_calendar"></div>
 </div>
+
+<a id="export_btn" class="btn btn-default" type="button">Export</a>
 
 <script src="{{ url_for('static', filename='js/jquery.js') }}"></script> 
 <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
@@ -115,11 +113,11 @@
     $(function () {
       $("#export_btn").click(function () {
         if (start_date != "" && end_date != "") {
-          
+          var category = $('#category_select').val()
           $.ajax({
             type: "post",
             dataType: "json",
-            url: "export_excel?start_date="+start_date+"&end_date="+end_date,
+            url: "export_excel?start_date="+start_date+"&end_date="+end_date+"&category="+category,
             complete: function (resp) {
 
               var data = $.parseJSON(resp.responseText);
